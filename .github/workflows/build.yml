@@ -1,0 +1,30 @@
+name: Build App Exe
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Cai dat Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+
+    - name: Cai thu vien
+      run: |
+        pip install pygame requests pynput pyinstaller
+
+    - name: Dong goi EXE
+      run: |
+        pyinstaller --noconsole --onefile --collect-all pynput --collect-all pygame bot.py
+
+    - name: Luu file Exe
+      uses: actions/upload-artifact@v4
+      with:
+        name: UngDung-TTS-Exe
+        path: dist/*.exe
